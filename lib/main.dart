@@ -1,4 +1,5 @@
 import 'package:contact_app/view/add_contact_page.dart';
+import 'package:contact_app/view/detailpage.dart';
 import 'package:contact_app/view/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -20,10 +21,10 @@ GoRouter router() {
          path: '/addContactPage',
         builder: (context, state) =>  AddContactPage()
          ),
-        // GoRoute(
-      //   path: '/whatsapp',
-      //   builder: (context, state) => const MyWhatsapp(),
-      // ),
+        GoRoute(
+        path: '/detailpage',
+       builder: (context, state) =>  DetailPage(),
+      ),
       // GoRoute(
       //   path: '/calm',
       //   builder: (context, state) => const CalmDownScreen(),

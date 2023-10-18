@@ -1,18 +1,18 @@
-import 'package:go_router/go_router.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../models/model.dart';
 
-class AddContactPage extends StatefulWidget {
-  const AddContactPage({Key? key}) : super(key: key);
+
+class EditPage extends StatefulWidget {
+  const EditPage({Key? key}) : super(key: key);
 
   @override
-  State<AddContactPage> createState() => _AddContactPageState();
+  State<EditPage> createState() => _EditPageState();
 }
 
-class _AddContactPageState extends State<AddContactPage> {
-  GlobalKey<FormState> addcontactkey = GlobalKey<FormState>();
+class _EditPageState extends State<EditPage> {
+  GlobalKey<FormState> editcontactkey = GlobalKey<FormState>();
 
   TextEditingController _firstname = TextEditingController();
   TextEditingController _lastname = TextEditingController();
@@ -27,10 +27,19 @@ class _AddContactPageState extends State<AddContactPage> {
   String? email;
   @override
   Widget build(BuildContext context) {
+
+
+    dynamic args = ModalRoute.of(context)!.settings.arguments;
+    _firstname.text = args.firstname;
+    _lastname.text = args.lastname;
+    _phone.text = args.phone;
+    _email.text = args.email;
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: ()=> context.go('/'),
+          onPressed: (){
+            Navigator.of(context).pop();
+          },
           icon:const Icon(Icons.arrow_back ,color: Colors.black,),
         ),
         backgroundColor: Colors.white,
@@ -38,9 +47,9 @@ class _AddContactPageState extends State<AddContactPage> {
         actions: [
           IconButton(onPressed: (){
             setState(() {
-              if(addcontactkey.currentState!.validate())
+              if(editcontactkey.currentState!.validate())
               {
-                addcontactkey.currentState!.save();
+                editcontactkey.currentState!.save();
                 Contact cont =Contact(
                   firstname:firstname,
                   lastname:lastname,
@@ -48,12 +57,15 @@ class _AddContactPageState extends State<AddContactPage> {
                   email:email,
                   image:_image,
                 );
-                contact.add(cont);
-                ()=> context.go('/');
+                int i= contact.indexOf(args);
+                contact[i]=cont;
+                setState(() {
+
+                  Navigator.of(context).pushReplacementNamed("/");
+                });
               }
             });
-          }
-          , icon:const Icon(Icons.check,color: Colors.black,))
+          }, icon:const Icon(Icons.check,color: Colors.black,))
         ],
       ),
       body:Container(
@@ -106,7 +118,7 @@ class _AddContactPageState extends State<AddContactPage> {
                   child: Container(
                     padding:const EdgeInsets.all(28),
                     child: Form(
-                      key: addcontactkey,
+                      key: editcontactkey,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -186,6 +198,6 @@ class _AddContactPageState extends State<AddContactPage> {
           ],
         ),
       ),
-    );
+    );;
   }
 }
